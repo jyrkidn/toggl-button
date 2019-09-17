@@ -5,29 +5,30 @@ togglbutton.render(
   {},
   function (elem) {
     const numElem = $('h2');
-    const titleElem = $('.subject h3') || '';
-    const projectElem = $('h1');
+    const projectElem = $('h1 .self');
     let description;
 
     if ($('.toggl-button')) {
       return;
     }
 
-    if (titleElem) {
-      description = titleElem.textContent;
+    if (numElem !== null) {
+      description = numElem.textContent;
     }
 
-    if (numElem !== null) {
-      if (description) {
-        description = ' ' + description;
-      }
-      description = numElem.textContent + description;
+    let project = projectElem && projectElem.textContent.match(/([a-z]{3}[0-9]{3})/);
+
+    if (project) {
+      project = project[0];
     }
 
     const link = togglbutton.createTimerLink({
       className: 'redmine',
       description: description,
-      projectName: projectElem && projectElem.textContent
+      projectName: project,
+      tags: [
+        'Development - serverside'
+      ]
     });
 
     $('h2').appendChild(link);
