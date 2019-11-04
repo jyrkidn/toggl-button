@@ -114,6 +114,12 @@ function getProject () {
   let project = '';
   let projectElement;
 
+  projectElement = document.head.querySelector('[name=ghx-project-key][content]');
+
+  if (projectElement) {
+    return projectElement.content.toLowerCase();
+  }
+
   // Best effort to find the "Project switcher" found in the sidebar of most pages, and extract
   // the project name from that. Historically project has not always been picked up reliably in Jira.
   projectElement = $('[data-test-id="navigation-apps.project-switcher-v2"] button > div:nth-child(2) > div');
