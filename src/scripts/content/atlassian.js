@@ -120,11 +120,27 @@ function getProject () {
     return projectElement.content.toLowerCase();
   }
 
+  if (!projectElement) {
+    projectElement = $('#jira-issue-header a');
+
+    if (projectElement) {
+      const ticket = projectElement.textContent.trim().toLowerCase();
+      const found = ticket.match(/.+?(?=-)/);
+
+      if (found) {
+        return found[0];
+      }
+    }
+  }
+
   // Best effort to find the "Project switcher" found in the sidebar of most pages, and extract
   // the project name from that. Historically project has not always been picked up reliably in Jira.
   projectElement = $('[data-test-id="navigation-apps.project-switcher-v2"] button > div:nth-child(2) > div');
+
   // Attempt to find the project name in page subtitle in case the sidebar is hidden
-  if (!projectElement) projectElement = $('a[href^="/browse/"][target=_self]');
+  if (!projectElement) {
+    projectElement = $('a[href^="/browse/"][target=_self]');
+  }
 
   if (projectElement) {
     project = projectElement.textContent.trim();
